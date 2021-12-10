@@ -1,0 +1,10 @@
+
+<h1>Task: {{task.title}}</h1>
+<h3>Description: {{task.description}}</h3>
+{% if task.complete == True %}
+<small style="color:green">Completed</small>
+{% else %}
+<small style="color:red">Not Completed</small>
+{% endif %}
+
+<p><a href="{% url 'tasks' %}">Home</a></p>
