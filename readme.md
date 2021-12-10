@@ -12,3 +12,7 @@
 3. Start the server using the CLI
 
 `python manage.py runserver`
+
+4. In your web browser, insert the local server address
+
+`127.0.0.1:8000`
