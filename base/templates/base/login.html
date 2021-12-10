@@ -1,17 +1,22 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<h1>Login</h1>
 
-<form method="POST" action="">
-    {% csrf_token %}
-    <label>Username</label>
-    <input type="text" name="username" placeholder="e.g Johndoe">
-    <label>Password</label>
-    <input type="password" name="password" placeholder="********">
+<div class="header-bar">
+    <h1>Login</h1>
+</div>
 
-    <input type="submit" value="Login">
-</form>
+<div class="card-body">
+    <form method="POST" action="">
+        {% csrf_token %}
+        <label>Username</label>
+        <input type="text" name="username" placeholder="e.g Johndoe">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="********">
+        <input style="margin-top: 10px;" class="button" type="submit" value="Login">
+    </form>
+    <p>Dont have account yet? <a href="{% url 'register' %}">Register</a></p>
+    
+</div>
 
-<p>Dont have account yet? <a href="{% url 'register' %}">Register</a></p>
 {% endblock content %}
