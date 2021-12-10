@@ -16,12 +16,14 @@
 </div>
 <!-- <hr>
 <h1>My Todo List</h1> -->
-<!-- <a href="{% url 'create-task' %}">Add Task</a>
 
-<form method="GET">
-    <input type="text" name="q" placeholder="Search......" value={{q}}>
-    <input type="submit" value="search">
-</form> -->
+<div id="search-add-wrapper">
+    <form method="GET" style="margin-top:20px; display:flex;">
+        <input type="text" name="q" placeholder="Search......" value={{q}}>
+        <input class="button" type="submit" value="search">
+    </form>
+    <a id="add-link" href="{% url 'create-task' %}">&#x2b;</a>
+</div>
 
 <div class="tasks-item-wrapper">
     {% for task in tasks %}
