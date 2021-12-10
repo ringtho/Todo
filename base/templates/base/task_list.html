@@ -10,10 +10,14 @@
 <h1>My Todo List</h1>
 <a href="{% url 'create-task' %}">Add Task</a>
 
-
+<form method="GET">
+    <input type="text" name="q" placeholder="Search......" value={{q}}>
+    <input type="submit" value="search">
+</form>
 <table>
     <tr>
         <th>Item</th>
+        <th></th>
     </tr>
     {% for task in tasks %}
 

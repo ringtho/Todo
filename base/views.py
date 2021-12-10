@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Q
 from django.contrib.auth.models import User
 from . models import Task
 from . forms import MyUserCreationForm, TaskForm
@@ -54,7 +55,11 @@ def registerUser(request):
 
 @login_required(login_url='/login')
 def getTasks(request):
-    tasks = Task.objects.all()
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    tasks = Task.objects.filter(Q(title__startswith=q)    )
+
+    # tasks = Task.objects.all()
+
     context = {"tasks":tasks}
     return render(request,'base/task_list.html', context)
 
