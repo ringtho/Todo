@@ -22,11 +22,17 @@ def loginView(request):
 
         if user is not None:
             login(request, user)
+            messages.success(request,"User successfully logged in!")
             return redirect('tasks')
         else:
             messages.error(request, "Incorrect Username or Password")
         
     return render(request, 'base/login.html')
+
+def logoutUser(request):
+    logout(request)
+    messages.success(request,"User successfully logged out!")
+    return redirect('tasks')
 
 
 def getTasks(request):

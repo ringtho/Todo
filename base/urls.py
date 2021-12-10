@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('login/', views.loginView, name="login"),
+    path('logout/', views.logoutUser, name='logout'),
     path('', views.getTasks, name='tasks'),
     path('task/<str:pk>/', views.getTask, name="task"),
     path('task-create/', views.createTask, name='create-task'),
