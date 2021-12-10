@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from . models import Task
-from . forms import TaskForm
+from . forms import MyUserCreationForm, TaskForm
 
 
 def loginView(request):
@@ -34,6 +34,23 @@ def logoutUser(request):
     logout(request)
     messages.success(request,"User successfully logged out!")
     return redirect('login')
+
+def registerUser(request):
+    form = MyUserCreationForm()
+    if request.user.is_authenticated:
+        return redirect('tasks')
+    if request.method=="POST":
+        form = MyUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('tasks')
+        else:
+            messages.error(request, "An error occured during the registration. Please Try again")
+    context = {'form': form}
+    return render(request, 'base/register.html', context)
 
 @login_required(login_url='/login')
 def getTasks(request):
