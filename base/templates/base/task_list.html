@@ -14,6 +14,9 @@
         <td>
             <a href="{% url 'update-task' task.id %}">Edit</a>
         </td>
+        <td>
+            <a href="{% url 'delete-task' task.id %}">Delete</a>
+        </td>
     </tr>
     {% empty %}
     <h3>No items created</h3>

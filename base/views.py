@@ -30,7 +30,6 @@ def updateTask(request, pk):
         form = TaskForm(request.POST, instance=task)
         task.title = request.POST.get('title')
         task.description = request.POST.get('description')
-        # task.complete = request.POST.get('complete')
         if request.POST.get('complete') is None:
             task.complete = False
         else:
@@ -39,3 +38,11 @@ def updateTask(request, pk):
         return redirect('tasks')
     context = {"form":form}
     return render(request, 'base/task_form.html', context)
+
+def deleteTask(request, pk):
+    task = Task.objects.get(id=pk)
+    if request.method == "POST":
+        task.delete()
+        return redirect('tasks')
+    context = {'task':task}
+    return render(request, 'base/delete.html', context)
