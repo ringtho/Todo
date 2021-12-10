@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from . models import Task
@@ -32,19 +33,21 @@ def loginView(request):
 def logoutUser(request):
     logout(request)
     messages.success(request,"User successfully logged out!")
-    return redirect('tasks')
+    return redirect('login')
 
-
+@login_required(login_url='/login')
 def getTasks(request):
     tasks = Task.objects.all()
     context = {"tasks":tasks}
     return render(request,'base/task_list.html', context)
 
+@login_required(login_url='/login')
 def getTask(request,pk):
     task = Task.objects.get(id=pk)
     context = {"task": task}
     return render(request, 'base/task.html', context)
 
+@login_required(login_url='/login')
 def createTask(request):
     form = TaskForm()
     if request.method=="POST":
@@ -55,6 +58,7 @@ def createTask(request):
     context = {'form': form}
     return render(request,'base/task_form.html', context)
 
+@login_required(login_url='/login')
 def updateTask(request, pk):
     task = Task.objects.get(id=pk)
     form = TaskForm(instance=task)
@@ -71,6 +75,7 @@ def updateTask(request, pk):
     context = {"form":form}
     return render(request, 'base/task_form.html', context)
 
+@login_required(login_url='/login')
 def deleteTask(request, pk):
     task = Task.objects.get(id=pk)
     if request.method == "POST":

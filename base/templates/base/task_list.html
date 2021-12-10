@@ -7,22 +7,17 @@
 {% endif %}
 <hr>
 
-{% if messages %}
-<ul>
-    {% for message in messages  %}
-    <li>{{message}}</li>
-    {% endfor %}
-<ul>
-{% endif %}
-
-
 <h1>My Todo List</h1>
 <a href="{% url 'create-task' %}">Add Task</a>
+
+
 <table>
     <tr>
         <th>Item</th>
     </tr>
     {% for task in tasks %}
+
+    {% if request.user == task.user %}
     <tr>
         <td>{{task.title}}</td>
         <td>
@@ -35,8 +30,12 @@
             <a href="{% url 'delete-task' task.id %}">Delete</a>
         </td>
     </tr>
+    {% endif %}
     {% empty %}
-    <h3>No items created</h3>
+    <h3>No tasks created</h3>
     {% endfor %}
+
+    
 </table>
+
 
