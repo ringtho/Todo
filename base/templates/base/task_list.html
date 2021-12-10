@@ -3,7 +3,7 @@
     <p>@{{request.user}}</p>
     <a href="">Logout</a>
 {% else %}
-    <a href="">Login</a>
+    <a href="{% url 'login' %}">Login</a>
 {% endif %}
 <hr>
 
@@ -31,6 +31,4 @@
     <h3>No items created</h3>
     {% endfor %}
 </table>
-
-<p><a href="">Login</a></p>
 
