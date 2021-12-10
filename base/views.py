@@ -15,12 +15,27 @@ def getTask(request,pk):
 
 def createTask(request):
     form = TaskForm()
-    task = Task.objects.all()
     if request.method=="POST":
         form = TaskForm(request.POST)
         if form.is_valid():
-            task = form.save()
+            form.save()
             return redirect('tasks')
-
     context = {'form': form}
     return render(request,'base/task_form.html', context)
+
+def updateTask(request, pk):
+    task = Task.objects.get(id=pk)
+    form = TaskForm(instance=task)
+    if request.method=="POST":
+        form = TaskForm(request.POST, instance=task)
+        task.title = request.POST.get('title')
+        task.description = request.POST.get('description')
+        # task.complete = request.POST.get('complete')
+        if request.POST.get('complete') is None:
+            task.complete = False
+        else:
+            task.complete = True
+        task.save()
+        return redirect('tasks')
+    context = {"form":form}
+    return render(request, 'base/task_form.html', context)
