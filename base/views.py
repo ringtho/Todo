@@ -57,9 +57,6 @@ def registerUser(request):
 def getTasks(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     tasks = Task.objects.filter(Q(title__startswith=q)    )
-
-    # tasks = Task.objects.all()
-
     context = {"tasks":tasks}
     return render(request,'base/task_list.html', context)
 
