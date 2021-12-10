@@ -56,8 +56,11 @@ def registerUser(request):
 @login_required(login_url='/login')
 def getTasks(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    tasks = Task.objects.filter(Q(title__startswith=q)    )
-    context = {"tasks":tasks}
+    user_tasks = Task.objects.filter(user=request.user)
+    tasks = user_tasks.filter(Q(title__startswith=q))
+    incomplete_tasks = user_tasks.filter(complete=False)
+    count = incomplete_tasks.count
+    context = {"tasks":tasks, "count": count}
     return render(request,'base/task_list.html', context)
 
 @login_required(login_url='/login')
