@@ -9,3 +9,5 @@ urlpatterns = [
     path('tasks-update/<str:pk>/',views.updateTask),
     path('tasks-delete/<str:pk>/',views.deleteTask),
 ]
+
+
