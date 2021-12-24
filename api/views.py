@@ -1,11 +1,16 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from rest_framework.response import Response
+from rest_framework.decorators import api_view 
 
 # Create your views here.
-def getTasks(request):
+@api_view(['GET'])
+def getRoutes(request):
     routes = [
         'GET /api/tasks',
         'GET /api/tasks/:id',
+        'POST /api/tasks-create',
+        'POST /api/tasks-update/:id',
+        'DELETE /api/tasks-delete/:id',
 
     ]
-    return JsonResponse(routes,safe=False)
+    return Response(routes)
