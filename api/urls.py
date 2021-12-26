@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.getRoutes),
     path('login/',views.loginUser),
     path('register/',views.registerUser),
+    path('user/',views.userView),
     path('tasks/', views.getTasks),
     path('tasks/<str:pk>/', views.getTask),
     path('tasks-create/',views.createTask),
