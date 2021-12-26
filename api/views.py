@@ -3,7 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.models import User
 from base.models import Task
-from . serializers import TaskSerializer, UserSerializer 
+from . serializers import TaskSerializer, UserSerializer
+import jwt, datetime 
 
 # Create your views here.
 @api_view(['POST'])
@@ -23,7 +24,21 @@ def loginUser(request):
         raise AuthenticationFailed(f"A user with username '{username}' does not exist!")
     if not user.check_password(password):
         raise AuthenticationFailed("Incorrect Password")
-    return Response({"success":{"message":"User successfully logged in!"}})
+
+    payload = {
+        "id":user.id,
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+        "iat":datetime.datetime.utcnow()
+    }
+
+    token = jwt.encode(payload,'secret',algorithm='HS256')
+    response = Response()
+    response.set_cookie(key='jwt', value=token, httponly=True)
+    response.data = {
+        "jwt":token
+    }
+
+    return response
 
 @api_view(['GET'])
 def getRoutes(request):
