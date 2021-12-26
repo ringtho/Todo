@@ -1,5 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import AuthenticationFailed
+from django.contrib.auth.models import User
 from base.models import Task
 from . serializers import TaskSerializer, UserSerializer 
 
@@ -10,6 +12,18 @@ def registerUser(request):
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response(serializer.data)
+
+@api_view(['POST'])
+def loginUser(request):
+    username = request.data['username']
+    password = request.data['password']
+
+    user = User.objects.filter(username=username).first()
+    if user is None:
+        raise AuthenticationFailed(f"A user with username '{username}' does not exist!")
+    if not user.check_password(password):
+        raise AuthenticationFailed("Incorrect Password")
+    return Response({"success":{"message":"User successfully logged in!"}})
 
 @api_view(['GET'])
 def getRoutes(request):
