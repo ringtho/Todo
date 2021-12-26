@@ -44,16 +44,26 @@ def loginUser(request):
 def userView(request):
     token = request.COOKIES.get('jwt')
     if not token:
-        raise AuthenticationFailed("The user is not authenticated!")
+        raise AuthenticationFailed("User not authenticated")
 
     try:
         payload = jwt.decode(token, 'secret',algorithms=['HS256'])
     except jwt.ExpiredSignatureError:
-        raise AuthenticationFailed("The user is not authenticated!")
+        raise AuthenticationFailed("User not authenticated")
 
     user = User.objects.filter(id=payload['id']).first()
     serializer = UserSerializer(user)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def logoutUser(request):
+    token = request.COOKIES.get('jwt')
+    if not token:
+        raise AuthenticationFailed("User not authenticated!")
+    response = Response()
+    response.delete_cookie('jwt')
+    response.data = {"success":{"message":"User successfully logged out!"}}
+    return response
 
 @api_view(['GET'])
 def getRoutes(request):
