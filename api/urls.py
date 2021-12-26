@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.getRoutes),
+    path('register/',views.registerUser),
     path('tasks/', views.getTasks),
     path('tasks/<str:pk>/', views.getTask),
     path('tasks-create/',views.createTask),

@@ -1,9 +1,16 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from base.models import Task
-from . serializers import TaskSerializer 
+from . serializers import TaskSerializer, UserSerializer 
 
 # Create your views here.
+@api_view(['POST'])
+def registerUser(request):
+    serializer = UserSerializer(data = request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data)
+
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
@@ -23,12 +30,12 @@ def getTasks(request):
 
 @api_view(['GET'])
 def getTask(request, pk):
-    task = Task.objects.get(id=pk)
+    task = Task.objects.filter(id=pk).first()
     if task:
         serializer = TaskSerializer(task, many=False)
         return Response(serializer.data)  
     else:
-        return Response(f"The task with the id {pk} does not exist!")
+        return Response({"error":f"The task with the id {pk} does not exist!"})
 
 @api_view(['POST'])
 def createTask(request):
