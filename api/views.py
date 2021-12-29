@@ -3,10 +3,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from base.models import Task
-from . serializers import TaskSerializer, UserSerializer
+from . serializers import TaskSerializer, UserSerializer, LogoutSerializer
 from .permissions import IsOwner
 
 # Create your views here.
@@ -69,10 +70,19 @@ def logoutUser(request):
     token = request.COOKIES.get('jwt')
     if not token:
         raise AuthenticationFailed("Please login to access this route!")
-    response = Response()
-    response.delete_cookie('jwt')
-    response.data = {"success":{"message":"User successfully logged out!"}}
-    return response
+
+    
+    try:
+        refresh_token = request.data['refresh']
+        token = RefreshToken(refresh_token).blacklist()
+        response = Response()
+        response.delete_cookie('jwt')
+        response.data = {"success": "User successfully logged out!"}
+        return response
+    except Exception as e:
+        message = {"error":"Invalid or expired token!"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET','POST'])
 @permission_classes([IsAuthenticated, IsOwner])
