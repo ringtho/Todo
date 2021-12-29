@@ -22,4 +22,4 @@ class UserSerializer(ModelSerializer):
 class TaskSerializer(ModelSerializer):
     class Meta:
         model = Task
-        fields = "__all__"
+        fields = ['id','title','description','complete']
