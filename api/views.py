@@ -7,20 +7,25 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from base.models import Task
-from . serializers import TaskSerializer, UserSerializer, LogoutSerializer
+from . serializers import TaskSerializer, UserSerializer
 from .permissions import IsOwner
 
 # Create your views here.
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
+        'GET /api/user/',
+        'POST /api/logout/',
+        'POST /api/register/',
+        'POST /api/login/',
         'GET /api/tasks',
-        'GET /api/tasks/:id',
-        'POST /api/tasks-create',
-        'POST /api/tasks-update/:id',
-        'DELETE /api/tasks-delete/:id',
+        'POST /api/tasks/',
+        'GET /api/tasks/:id/',
+        'POST /api/tasks/:id/',
+        'DELETE /api/tasks/:id/',
+        'POST /api/token/refresh',
     ]
-    return Response(routes)
+    return Response(routes, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def registerUser(request):
