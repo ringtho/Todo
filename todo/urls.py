@@ -22,7 +22,3 @@ urlpatterns = [
     path('api/', include('api.urls')),
 
 ]
-
-#handlers for 500 error and 404
-handler404 = 'api.utils.views.error404'
-handler500 = 'api.utils.views.error500'
